@@ -314,7 +314,94 @@
 // })
 // export class AppModule {}
 
-//*injection scope 
+//*injection scope
 //?1. default scope :- single shared provider instance within module
 //?2. request scope :- create a new instance per incoming request or new instance of provider for every request @Injectable ({scope : Scope.REQUEST})
 //?3. transient scope :- new dedicated instance of provider for each consumer (whoever injects it)
+
+//*services
+//?controller file
+// /* eslint-disable prettier/prettier */
+// /* eslint-disable @typescript-eslint/no-unused-vars */
+
+// import {
+//     Body,
+//     Controller,
+//     Delete,
+//     Get,
+//     Param,
+//     Post,
+//     Put,
+//   } from '@nestjs/common';
+//   import { CreateUserDto } from './dto/create-user.dto';
+//   import { UserService } from './user.service';
+
+//   @Controller('/users')
+//   export class UsersController {
+
+//       constructor(private UserService:UserService){}
+
+//     @Post()
+//     addUser(@Body() createUserDto: CreateUserDto) {
+//      this.UserService.addUser(createUserDto);
+//       return 'User created successfully';
+//     }
+
+//   //   @Get()
+//   //   getUsers() {
+
+//   //   }
+
+//     @Get(':id')
+//     getUser(@Param('id') id: number) {
+//       return this.UserService.getUser(id);
+//     }
+
+//     @Put(':id')
+//     updateUser(@Param('id') id: number, @Body() updateUserDto: CreateUserDto) {
+//       this.UserService.getUser(id);
+//       return 'user updated successfully';
+//     }
+
+//     @Delete(':id')
+//     deleteUser(@Param('id') id: number) {
+//       this.UserService.deleteUser(id);
+//       return 'user deleted successfully';
+//     }
+//   }
+//?service file
+//   /* eslint-disable prettier/prettier */
+// import { Injectable } from "@nestjs/common";
+
+// export interface User {
+//     name: string;
+//     age: number;
+//     id: number;
+//   }
+// @Injectable()
+// export class UserService{
+//     private store = new Map<number, User>();
+
+//     addUser(user:User){
+//         this.store.set(user.id,user);
+//     }
+
+//     getUser(id:number){
+//         return this.store.get(id);
+//     }
+
+//     updateUser(id:number,user:User){
+//         this.store.set(id,user);
+//     }
+
+//     deleteUser(id:number){
+//         this.store.delete(id);
+//     }
+// }
+
+//?module app
+
+// @Module({
+//     controllers: [UsersController, AlbumsController],
+//     providers: [UserService],
+//   })
