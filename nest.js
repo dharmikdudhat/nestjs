@@ -405,3 +405,44 @@
 //     controllers: [UsersController, AlbumsController],
 //     providers: [UserService],
 //   })
+
+
+//*Dynamic modules
+//The Nest module system includes a powerful feature called dynamic modules. This feature enables you to easily create customizable modules that can register and configure providers dynamically. Dynamic modules are covered extensively here. In this chapter, we'll give a brief overview to complete the introduction to modules.
+//?dynamic database module
+// import { Module } from '@nestjs/common';
+// import { createDatabaseProviders } from './database.providers';
+// import { Connection } from './connection.provider';
+
+// @Module({
+//   providers: [Connection],
+// })
+// export class DatabaseModule {
+//   static forRoot(entities = [], options) {
+//     const providers = createDatabaseProviders(options, entities);
+//     return {
+//       module: DatabaseModule,
+//       providers: providers,
+//       exports: providers,
+//     };
+//   }
+// }
+
+//?interface
+// {
+//     global: true,
+//     module: DatabaseModule,
+//     providers: providers,
+//     exports: providers,
+//   }
+
+//?database module
+// import { Module } from '@nestjs/common';
+// import { DatabaseModule } from './database/database.module';
+// import { User } from './users/entities/user.entity';
+
+// @Module({
+//   imports: [DatabaseModule.forRoot([User])],
+// })
+// export class AppModule {}
+
