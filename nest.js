@@ -260,7 +260,7 @@
 //*string object and array injection
 //?in app module
 // import { Module } from '@nestjs/common';
-// // eslint-disable-next-line prettier/prettier
+ // eslint-disable-next-line prettier/prettier
 // import { UsersController } from './users.controller';
 // import { AlbumsController } from './album.controller';
 
@@ -347,10 +347,10 @@
 //       return 'User created successfully';
 //     }
 
-//   //   @Get()
-//   //   getUsers() {
+   //   @Get()
+   //   getUsers() {
 
-//   //   }
+   //   }
 
 //     @Get(':id')
 //     getUser(@Param('id') id: number) {
@@ -446,3 +446,83 @@
 // })
 // export class AppModule {}
 
+//*pipes
+// pipe is a class annotated with the @Injectable() decorator, which implements the PipeTransform interface.
+// Pipes have two typical use cases:
+// transformation: transform input data to the desired form (e.g., from string to integer)
+// validation: evaluate input data and if valid, simply pass it through unchanged; otherwise, throw an exception
+//?Built-in pipes
+// Nest comes with nine pipes available out-of-the-box:
+// ValidationPipe
+// ParseIntPipe
+// ParseFloatPipe
+// ParseBoolPipe
+// ParseArrayPipe
+// ParseUUIDPipe
+// ParseEnumPipe
+// DefaultValuePipe
+// ParseFilePipe
+//?ex
+// @Get(':id')
+// async findOne(@Param('id', ParseIntPipe) id: number) {
+//   return this.catsService.findOne(id);
+// }
+//?dynamic status code 
+// @Get(':id')
+// async findOne(
+//   @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }))
+//   id: number,
+// ) {
+//   return this.catsService.findOne(id);
+// }
+//?ex
+// @Get(':uuid')
+// async findOne(@Param('uuid', new ParseUUIDPipe()) uuid: string) {
+//   return this.catsService.findOne(uuid);
+// }
+
+
+//*miiddleware
+//?they are the functions which is called before the route handler(controller)
+//?typres of middle ware
+//!1.module based
+//root
+//|-users
+//|-book
+//!global
+//?methods for craeting middle ware
+//!function based
+// import {request,Responce,NextFunction} from 'express';
+// export function logger(req:Request,res:Responce,next:NextFunction){
+//     console.log("request....");
+//     next();
+// };
+//!class based
+// @Injectable()
+// export class LoggerMiddleWare implements NestMiddleware {
+//     use(req:Request,res:Responce,next:NextFunction){
+//         console.log("request....");
+//         next();
+//     }
+// }
+//?implement middleware
+// @Module({
+//     imports: [CatsModule],
+//   })
+//   export class AppModule implements NestModule {
+//     configure(consumer: MiddlewareConsumer) {
+//       consumer
+//         .apply(LoggerMiddleware)
+//         .forRoutes('cats');
+//     }
+//   }
+//?Multiple middleware
+//consumer.apply(cors(), helmet(), logger).forRoutes(CatsController);
+
+//*guards
+//A guard is a class annotated with the @Injectable() decorator, which implements the CanActivate interface.
+//Guards have a single responsibility. They determine whether a given request will be handled by the route handler or not, depending on certain conditions (like permissions, roles, ACLs, etc.) present at run-time. This is often referred to as authorization.
+//Guards are executed after all middleware, but before any interceptor or pipe.
+
+//*interceptors
+//An interceptor is a class annotated with the @Injectable() decorator and implements the NestInterceptor interface.
