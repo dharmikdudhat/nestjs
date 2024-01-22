@@ -529,3 +529,8 @@
 
 //*authentication in nest js
 //?using passport nodejs library
+
+//*ORM(object relational mapping)
+//Object-relational mapping (ORM) is a technique that connects programming code with relational databases. It uses metadata descriptors to create a layer between object-oriented program (OOP) code and the database
+//It allows developers to perform CRUD operations on databases without directly writing SQL code.
+//ORM provides a higher level of abstraction and encapsulation, enabling developers to work with databases using OOP principles. 
