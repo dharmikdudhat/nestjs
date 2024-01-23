@@ -2,14 +2,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BookModule } from './book/book.module';
-import { ConfigModule } from '@nestjs/config';
-@Module({
-   imports:[ConfigModule.forRoot({
-    isGlobal: true,
-    envFilePath: [".local.env"],
-  }),
+// import { ConfigModule } from '@nestjs/config';
 
-  MongooseModule.forRoot(process.env.MONGO_URI),
+
+console.log("hsgcdjh");
+
+@Module({
+   imports:[
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/mydb'),
     BookModule
   ],
   controllers: [],

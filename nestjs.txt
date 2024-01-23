@@ -1,0 +1,88 @@
+->Nestjs
+---->Nest (NestJS) is a framework for building efficient, scalable Node.js server-side applications.
+ 	It uses progressive JavaScript, is built with and fully supports TypeScript (yet still enables developers
+	to code in pure JavaScript) and combines elements of OOP (Object Oriented Programming), FP (Functional Programming), 
+	and FRP (Functional Reactive Programming).
+
+	Under the hood, Nest makes use of robust HTTP Server frameworks like Express (the default) and optionally can be 
+	configured to use Fastify as well!
+	Support for multiple DataBases, use of Typescript (less error prone app) and main feature that NestJS gives is it's Modular Structure.
+
+->Controllers
+---->Controllers are responsible for handling incoming requests and returning responses to the client.
+	A controller's purpose is to receive specific requests for the application.
+ 	The routing mechanism controls which controller receives which requests. 
+	Frequently, each controller has more than one route, and different routes can perform different actions.
+
+-->Every async function has to return a Promise. This means that you can return a deferred value that Nest will be able to resolve by itself.
+
+--> DTO (Data Transfer Object) schema. A DTO is an object that defines how the data will be sent over the network. We could determine the DTO schema by using TypeScript interfaces, or by simple classes.
+export class CreateCatDto {
+  name: string;
+  age: number;
+  breed: string;
+}
+@Post()
+async create(@Body() createCatDto: CreateCatDto) {
+  return 'This action adds a new cat';
+}
+
+->Providers
+---->The main idea of a provider is that it can be injected as a dependency; this means objects can create various relationships with each other, and the function of "wiring up" these objects can largely be delegated to the Nest runtime system.
+import { Injectable } from '@nestjs/common';
+import { Cat } from './interfaces/cat.interface';
+
+@Injectable()
+export class CatsService {
+  private readonly cats: Cat[] = [];
+
+  create(cat: Cat) {
+    this.cats.push(cat);
+  }
+
+  findAll(): Cat[] {
+    return this.cats;
+  }
+}
+
+@Controller('cats')
+export class CatsController {
+  constructor(private catsService: CatsService) {}
+
+  @Post()
+  async create(@Body() createCatDto: CreateCatDto) {
+    this.catsService.create(createCatDto);
+  }
+}
+-->Dependency injection
+In Nest, thanks to TypeScript capabilities, it's extremely easy to manage dependencies because they are resolved just by type. In the example below, Nest will resolve the catsService by creating and returning an instance of CatsService (or, in the normal case of a singleton, returning the existing instance if it has already been requested elsewhere). This dependency is resolved and passed to your controller's constructor (or assigned to the indicated property):
+constructor(private catsService: CatsService) {}
+
+-->The technique we've used so far is called constructor-based injection, as providers are injected via the constructor method. In some very specific cases, property-based injection might be useful. For instance, if your top-level class depends on either one or multiple providers, passing them all the way up by calling super() in sub-classes from the constructor can be very tedious. In order to avoid this, you can use the @Inject() decorator at the property level.
+import { Injectable, Inject } from '@nestjs/common';
+@Injectable()
+export class HttpService<T> {
+  @Inject('HTTP_OPTIONS')
+  private readonly httpClient: T;
+}
+
+->Modules
+-->providers	the providers that will be instantiated by the Nest injector and that may be shared at least across this module
+-->controllers	the set of controllers defined in this module which have to be instantiated
+-->imports	the list of imported modules that export the providers which are required in this module
+-->exports	the subset of providers that are provided by this module and should be available in other modules which import this module. You can use either the provider itself or just its token (provide value)
+-->When you want to provide a set of providers which should be available everywhere out-of-the-box (e.g., helpers, database connections, etc.), make the module global with the @Global() decorator.
+import { Module, Global } from '@nestjs/common';
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+@Global()
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+  exports: [CatsService],
+})
+export class CatsModule {}
+
+
+
+
