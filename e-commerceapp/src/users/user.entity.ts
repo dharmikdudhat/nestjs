@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Roles } from "src/utility/common/user-roles.enum";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from "typeorm";
 
-@Entity()
+@Entity('user')
 export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -10,10 +10,10 @@ export class UserEntity {
     @Column()
     name: string;
 
-    @Column()
+    @Column({unique:true})
     email: string;
 
-    @Column()
+    @Column({select:false})
     password: string;
 
     @Column({ 
@@ -22,6 +22,13 @@ export class UserEntity {
         default: Roles.USER
     })
     roles: Roles
+
+    @CreateDateColumn()
+    createdAt:Timestamp;
+
+    @UpdateDateColumn()
+    updateAt:Timestamp;
+    
 }
 
 
